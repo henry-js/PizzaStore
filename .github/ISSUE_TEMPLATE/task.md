@@ -1,6 +1,6 @@
 ---
 name: Task
-about: A template that should be used when creating tasks in GitHub Issues
+about: A template that should be used when creating tasks in GitHub Issues.
 title: ''
 labels: task
 assignees: henry-js
