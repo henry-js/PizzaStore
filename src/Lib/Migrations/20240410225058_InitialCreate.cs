@@ -21,7 +21,8 @@ namespace Lib.Migrations
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
                     PostCode = table.Column<string>(type: "TEXT", nullable: false),
-                    HouseNumber = table.Column<string>(type: "TEXT", nullable: false)
+                    HouseNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    DeliveryDistance = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +64,12 @@ namespace Lib.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    DeliveryCharge = table.Column<decimal>(type: "TEXT", nullable: false)
+                    CustomerDistance = table.Column<double>(type: "REAL", nullable: false),
+                    DeliveryCharge = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Price = table.Column<decimal>(type: "TEXT", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsInvoiced = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsDeliverable = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,7 +91,7 @@ namespace Lib.Migrations
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     BaseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: true)
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +100,8 @@ namespace Lib.Migrations
                         name: "FK_OrderPizzas_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderPizzas_PizzaBases_BaseId",
                         column: x => x.BaseId,
@@ -129,14 +136,14 @@ namespace Lib.Migrations
 
             migrationBuilder.InsertData(
                 table: "Customers",
-                columns: new[] { "Id", "FirstName", "HouseNumber", "LastName", "PostCode" },
+                columns: new[] { "Id", "DeliveryDistance", "FirstName", "HouseNumber", "LastName", "PostCode" },
                 values: new object[,]
                 {
-                    { 1, "John", "1", "Doe", "LL572EG" },
-                    { 2, "Alan", "2", "Wake", "B161AN" },
-                    { 3, "Ian", "3", "Mile", "EH64DA" },
-                    { 4, "Stephen", "4", "Bonnell", "BR75PN" },
-                    { 5, "Kate", "5", "Braithwaite", "FY76SU" }
+                    { 1, 0.0, "John", "1", "Doe", "LL572EG" },
+                    { 2, 0.0, "Alan", "2", "Wake", "B161AN" },
+                    { 3, 0.0, "Ian", "3", "Mile", "EH64DA" },
+                    { 4, 0.0, "Stephen", "4", "Bonnell", "BR75PN" },
+                    { 5, 0.0, "Kate", "5", "Braithwaite", "FY76SU" }
                 });
 
             migrationBuilder.InsertData(

@@ -14,10 +14,10 @@
             "args": [
                 "order",
                 "add",
-                "James",
-                "Henry",
-                "WV8AYT",
-                "54",
+                // "James",
+                // "Henry",
+                // "WV8AYT",
+                // "54",
             ],
             "cwd": "${workspaceFolder}/src/Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

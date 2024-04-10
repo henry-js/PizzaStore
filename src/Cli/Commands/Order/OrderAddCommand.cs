@@ -24,38 +24,35 @@ public class OrderAddCommand(IAnsiConsole console, ICustomerService customerServ
         .UseConverter(cust => cust.Code)
         );
 
-        var order = new Order() { Customer = selectedCustomer };
         bool finished = false;
-
+        var orderPizzas = new List<OrderPizza>();
         while (!finished)
         {
-            OrderPizza pizza = new OrderPizza();
-
             var pizzaBase = _console.Prompt(new SelectionPrompt<PizzaBase>()
             .Title("Select a base")
             .AddChoices(_orderService.GetPizzaBases())
             .UseConverter(pb => $"{pb.Name}: {pb.Price:C}"));
 
-            pizza.AddBase(pizzaBase);
-
-            pizza.Description = $"{pizza.Base.Name}, Cheese & Tomato";
             bool finishedToppings = !_console.Confirm("Add topping?");
 
+            var pizzaToppings = new List<Topping>();
             while (!finishedToppings)
             {
                 var topping = _console.Prompt(new SelectionPrompt<Topping>()
                 .Title("Select a topping")
                 .AddChoices(_orderService.GetPizzaToppings())
-                .UseConverter(t => $"{t.Name:30}: {t.Price:C}"));
+                .UseConverter(t => $"{t.Name}: {t.Price:C}"));
 
-                pizza.AddTopping(topping);
+                pizzaToppings.Add(topping);
 
                 finishedToppings = !_console.Confirm("Continue adding toppings?", defaultValue: false);
             }
-            order.AddPizza(pizza);
-            _console.WriteLine("Pizza added.");
+            var pizza = OrderPizza.CreateNew(pizzaBase, pizzaToppings);
+            orderPizzas.Add(pizza);
+            _console.WriteLine($"{pizza.Description} added.");
             finished = !_console.Confirm("Do you want more pizzas?");
         }
+        var order = Order.CreateNew(selectedCustomer, orderPizzas);
         DisplayOrder(order);
 
         if (_console.Confirm("Place order?"))

@@ -12,24 +12,24 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
     {
     }
 
-    public Order GetOrder(string orderId)
+    public Order GetOrder(int orderId)
     {
-        return new Order();
+        return _db.Orders.Single(o => o.Id == orderId);
     }
 
-    public PizzaBase[] GetPizzaBases()
+    public IEnumerable<PizzaBase> GetPizzaBases()
     {
         return [.. _db.PizzaBases];
     }
 
-    public Topping[] GetPizzaToppings()
+    public IEnumerable<Topping> GetPizzaToppings()
     {
         return [.. _db.Toppings];
     }
 
     public void Save(Order order)
     {
-        _db.Add(order);
+        _db.Orders.Add(order);
         _db.SaveChanges();
     }
 

@@ -4,10 +4,10 @@ namespace PizzaStore.Lib.Services;
 
 public interface IOrderService
 {
-    Order GetOrder(string orderId);
+    Order GetOrder(int orderId);
     void DeleteOrder(Order order);
     void UpdateOrder(Order order);
-    PizzaBase[] GetPizzaBases();
-    Topping[] GetPizzaToppings();
+    IEnumerable<PizzaBase> GetPizzaBases();
+    IEnumerable<Topping> GetPizzaToppings();
     void Save(Order order);
 }

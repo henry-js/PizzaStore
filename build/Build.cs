@@ -63,12 +63,12 @@ class Build : NukeBuild
     [Solution(GenerateProjects = true)] readonly Solution Solution;
     [GitRepository] readonly GitRepository Repository;
     [MinVer] MinVer MinVer;
-    AbsolutePath ProjectDirectory => SourceDirectory / "Cli";
     AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
     AbsolutePath PublishDirectory => RootDirectory / "publish";
     AbsolutePath PackDirectory => RootDirectory / "packages";
-    AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath TestDirectory => RootDirectory / "tests";
+    AbsolutePath SourceDirectory => RootDirectory / "src";
+    AbsolutePath ProjectDirectory => SourceDirectory / "Cli";
     IEnumerable<string> Projects => Solution.AllProjects.Select(x => x.Name);
 
     Target Print => _ => _
@@ -100,7 +100,7 @@ class Build : NukeBuild
         {
             DotNetRestore(_ => _
                 .SetForce(true)
-                .SetProjectFile(Solution.Directory));
+                .SetProjectFile(Solution.Path));
         });
 
     Target Compile => _ => _
