@@ -2,3 +2,6 @@
 
 # MA0004: Use Task.ConfigureAwait
 dotnet_diagnostic.MA0004.severity = none
+
+# # MA0016: Prefer using collection abstraction instead of implementation
+# dotnet_diagnostic.MA0016.severity = none

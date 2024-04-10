@@ -21,7 +21,7 @@ builder.Logging.ClearProviders();
 // Bind configuration section to object
 // builder.Services.AddOptions<NestedSettings>()
 //     .Bind(builder.Configuration.GetSection(NestedSettings.Key));
-var pizzaDbString = builder.Configuration.GetConnectionString("PizzaStoreDb");
+var pizzaDbString = builder.Configuration.GetConnectionString("PizzaStoreDb")!;
 builder.Services
       .AddPizzaStoreDb(connectionString: pizzaDbString)
       .AddPizzaStoreServices();
@@ -32,6 +32,8 @@ builder.Services.AddScoped<CustomerListCommand>();
 builder.Services.AddScoped<CustomerAddCommand>();
 builder.Services.AddScoped<CustomerDeleteCommand>();
 builder.Services.AddScoped<CustomerViewCommand>();
+
+builder.Services.AddScoped<OrderAddCommand>();
 
 //
 // The standard call save for the commands will be pre-added & configured
