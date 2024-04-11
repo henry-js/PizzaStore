@@ -29,6 +29,8 @@ public class CustomerService(PizzaStoreContext dbContext) : ICustomerService
         }
 
         // TODO: dbcontext.SAVECHANGES();
+        db.Customers.Add(customer);
+        db.SaveChanges();
         return new CustomerResult(customer);
     }
 

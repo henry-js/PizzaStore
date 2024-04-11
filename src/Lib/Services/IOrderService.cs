@@ -9,5 +9,5 @@ public interface IOrderService
     void UpdateOrder(Order order);
     IEnumerable<PizzaBase> GetPizzaBases();
     IEnumerable<Topping> GetPizzaToppings();
-    void Save(Order order);
+    Invoice Save(Order order);
 }

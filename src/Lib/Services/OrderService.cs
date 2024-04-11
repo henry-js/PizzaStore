@@ -27,10 +27,11 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
         return [.. _db.Toppings];
     }
 
-    public void Save(Order order)
+    public Invoice Save(Order order)
     {
         _db.Orders.Add(order);
         _db.SaveChanges();
+        return new Invoice();
     }
 
     public void UpdateOrder(Order order)

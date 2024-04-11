@@ -63,10 +63,11 @@ public class OrderAddCommand(IAnsiConsole console, ICustomerService customerServ
 
     private void DisplayOrder(Order order)
     {
+        var table = new Table();
         foreach (var pizza in order.Pizzas)
         {
             _console.WriteLine($"{pizza.Description}, {pizza.Price:C}");
-            _console.WriteLine($"Total Pizza Cost: {order.Price:C}");
+            _console.WriteLine($"Total Pizza Cost: {order.OrderPrice:C}");
         }
     }
 }

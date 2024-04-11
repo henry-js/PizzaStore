@@ -12,8 +12,8 @@ public class Order
     public Customer Customer { get; set; } = default!;
     public IEnumerable<OrderPizza> Pizzas { get; set; } = [];
     public double CustomerDistance { get; set; }
-    public decimal DeliveryCharge { get; set; }
-    public decimal Price { get; set; }
+    public decimal DeliveryPrice { get; set; }
+    public decimal OrderPrice { get; set; }
     public bool IsActive { get; set; }
     public bool IsInvoiced { get; set; }
     public bool IsDeliverable { get; set; }
@@ -33,9 +33,9 @@ public class Order
         {
             Customer = customer,
             Pizzas = orderPizzas.ToArray(),
-            Price = orderPizzas.Sum(p => p.Price),
+            OrderPrice = orderPizzas.Sum(p => p.Price),
             CustomerDistance = customer.DeliveryDistance,
-            DeliveryCharge = CalcDeliveryCharge(customer.DeliveryDistance),
+            DeliveryPrice = CalcDeliveryCharge(customer.DeliveryDistance),
             IsDeliverable = customer.DeliveryDistance > 8,
         };
 
