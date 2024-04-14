@@ -27,14 +27,24 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
         return [.. _db.Toppings];
     }
 
-    public Invoice Save(Order order)
+    public void Save(Order order)
     {
         _db.Orders.Add(order);
         _db.SaveChanges();
-        return new Invoice();
     }
 
-    public void UpdateOrder(Order order)
+    public Invoice? InvoiceOrder(Order order, int userId)
     {
+        order = _db.Orders.Single(o => o.Id == order.Id);
+        Invoice? invoice = null;
+        if (order.IsActive && !order.IsInvoiced)
+        {
+            invoice = order.ToInvoice(userId);
+        }
+        if (invoice == null) return null;
+
+        _db.Invoices.Add(invoice);
+        _db.SaveChanges();
+        return invoice;
     }
 }

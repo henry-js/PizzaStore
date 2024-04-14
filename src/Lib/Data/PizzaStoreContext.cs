@@ -10,6 +10,7 @@ public class PizzaStoreContext(DbContextOptions<PizzaStoreContext> options) : Db
     public DbSet<PizzaBase> PizzaBases { get; set; }
     public DbSet<Topping> Toppings { get; set; }
     public DbSet<OrderPizza> OrderPizzas { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

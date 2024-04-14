@@ -5,8 +5,6 @@ namespace PizzaStore.Lib.Data.Models;
 
 public class Order
 {
-    // private readonly List<OrderPizza> _pizzas = [];
-
     public Order() { }
     public int Id { get; set; }
     public Customer Customer { get; set; } = default!;
@@ -17,15 +15,6 @@ public class Order
     public bool IsActive { get; set; }
     public bool IsInvoiced { get; set; }
     public bool IsDeliverable { get; set; }
-
-    // public void AddPizza(OrderPizza pizza)
-    // {
-    //     if (IsActive || IsInvoiced)
-    //         return;
-
-    //     _pizzas.Add(pizza);
-    //     Price = CalculatePrice();
-    // }
 
     public static Order CreateNew(Customer customer, IEnumerable<OrderPizza> orderPizzas)
     {
@@ -51,8 +40,28 @@ public class Order
             _ => 0,
         };
 
-    public void DeActivate()
+    internal void DeActivate()
     {
         IsActive = false;
+    }
+
+    internal Invoice? ToInvoice(int userId)
+    {
+        if (IsActive && !IsInvoiced)
+        {
+            var orderPrice = IsDeliverable ? OrderPrice + DeliveryPrice : OrderPrice;
+            var invoice = new Invoice()
+            {
+                Order = this,
+                Customer = Customer,
+                CreatedAt = DateTime.UtcNow,
+                Price = orderPrice,
+                VatPrice = orderPrice * (decimal)Invoice.VatRate,
+                UserId = userId,
+            };
+            IsInvoiced = true;
+            return invoice;
+        }
+        return null;
     }
 }
