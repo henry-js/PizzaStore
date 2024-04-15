@@ -33,11 +33,11 @@ public class PizzaStoreContext(DbContextOptions<PizzaStoreContext> options) : Db
 
         modelBuilder.Entity<Customer>().HasData(
             [
-                new () { Id = 1, FirstName = "John", LastName = "Doe", PostCode = "LL572EG", HouseNumber = "1" },
-                new () { Id = 2, FirstName = "Alan", LastName = "Wake", PostCode = "B161AN", HouseNumber = "2" },
-                new () { Id = 3, FirstName = "Ian", LastName = "Mile", PostCode = "EH64DA", HouseNumber = "3" },
-                new () { Id = 4, FirstName = "Stephen", LastName = "Bonnell", PostCode = "BR75PN", HouseNumber = "4" },
-                new () { Id = 5, FirstName = "Kate", LastName = "Braithwaite", PostCode = "FY76SU", HouseNumber = "5" },
+                new () { Id = 1, FirstName = "John", LastName = "Doe", PostCode = "LL572EG", HouseNumber = "1", DeliveryDistance = 1 },
+                new () { Id = 2, FirstName = "Alan", LastName = "Wake", PostCode = "B161AN", HouseNumber = "2", DeliveryDistance = 2 },
+                new () { Id = 3, FirstName = "Ian", LastName = "Mile", PostCode = "EH64DA", HouseNumber = "3", DeliveryDistance = 3 },
+                new () { Id = 4, FirstName = "Stephen", LastName = "Bonnell", PostCode = "BR75PN", HouseNumber = "4", DeliveryDistance = 4 },
+                new () { Id = 5, FirstName = "Kate", LastName = "Braithwaite", PostCode = "FY76SU", HouseNumber = "5", DeliveryDistance = 5 },
             ]);
     }
 }

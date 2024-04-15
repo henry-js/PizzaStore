@@ -4,6 +4,6 @@ namespace PizzaStore.Lib.Services;
 
 public interface ICustomerService
 {
-    CustomerResult AddCustomer(string firstName, string lastName, int houseNumber, string postCode);
+    public CustomerResult AddCustomer(string firstName, string lastName, int houseNumber, string postCode, int deliveryDistance);
     IEnumerable<Customer> GetAll();
 }

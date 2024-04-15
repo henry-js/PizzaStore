@@ -9,7 +9,7 @@ public class CustomerService(PizzaStoreContext dbContext) : ICustomerService
 {
     private readonly PizzaStoreContext db = dbContext;
 
-    public CustomerResult AddCustomer(string firstName, string lastName, int houseNumber, string postCode)
+    public CustomerResult AddCustomer(string firstName, string lastName, int houseNumber, string postCode, int deliveryDistance)
     {
         var customer = new Customer()
         {
@@ -17,6 +17,7 @@ public class CustomerService(PizzaStoreContext dbContext) : ICustomerService
             LastName = lastName,
             HouseNumber = houseNumber.ToString(CultureInfo.CurrentCulture),
             PostCode = postCode,
+            DeliveryDistance = deliveryDistance
         };
 
         var validator = new CustomerValidator();
@@ -28,7 +29,6 @@ public class CustomerService(PizzaStoreContext dbContext) : ICustomerService
             return new CustomerResult(result.Errors);
         }
 
-        // TODO: dbcontext.SAVECHANGES();
         db.Customers.Add(customer);
         db.SaveChanges();
         return new CustomerResult(customer);

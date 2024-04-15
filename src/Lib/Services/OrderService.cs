@@ -1,3 +1,4 @@
+using System.Collections;
 using PizzaStore.Lib.Data;
 using PizzaStore.Lib.Data.Models;
 using PizzaStore.Lib.Services;
@@ -27,6 +28,11 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
         return [.. _db.Toppings];
     }
 
+    public IEnumerable<Customer> GetCustomers()
+    {
+        return [.. _db.Customers];
+
+    }
     public void Save(Order order)
     {
         _db.Orders.Add(order);
@@ -47,4 +53,5 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
         _db.SaveChanges();
         return invoice;
     }
+
 }

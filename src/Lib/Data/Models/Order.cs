@@ -25,7 +25,7 @@ public class Order
             OrderPrice = orderPizzas.Sum(p => p.Price),
             CustomerDistance = customer.DeliveryDistance,
             DeliveryPrice = CalcDeliveryCharge(customer.DeliveryDistance),
-            IsDeliverable = customer.DeliveryDistance > 8,
+            IsDeliverable = customer.DeliveryDistance < 8,
         };
 
         return order;

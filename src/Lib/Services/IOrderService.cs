@@ -8,5 +8,7 @@ public interface IOrderService
     void DeleteOrder(Order order);
     IEnumerable<PizzaBase> GetPizzaBases();
     IEnumerable<Topping> GetPizzaToppings();
+    public IEnumerable<Customer> GetCustomers();
+
     void Save(Order order);
 }
