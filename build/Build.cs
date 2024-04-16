@@ -36,17 +36,17 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
             GitHubActionsImage.UbuntuLatest,
             AutoGenerate = true,
             OnPushBranches = ["main"],
-            InvokedTargets = [nameof(BumpVersion), nameof(Publish)],
+            InvokedTargets = [nameof(Publish)],
             FetchDepth = 0
         )]
-[GitHubActions(
-    "bumpversion",
-    GitHubActionsImage.UbuntuLatest,
-    AutoGenerate = false,
-    OnPullRequestBranches = ["main"],
-    FetchDepth = 0,
-    InvokedTargets = [nameof(BumpVersion)]
-)]
+// [GitHubActions(
+//     "bumpversion",
+//     GitHubActionsImage.UbuntuLatest,
+//     AutoGenerate = false,
+//     OnPullRequestBranches = ["main"],
+//     FetchDepth = 0,
+//     InvokedTargets = [nameof(BumpVersion)]
+// )]
 class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -62,19 +62,18 @@ class Build : NukeBuild
 
     [Solution(GenerateProjects = true)] readonly Solution Solution;
     [GitRepository] readonly GitRepository Repository;
-    [MinVer] MinVer MinVer;
-    AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
+    // AbsolutePath ArtifactsDirectory => RootDirectory / ".artifacts";
     AbsolutePath PublishDirectory => RootDirectory / "publish";
     AbsolutePath PackDirectory => RootDirectory / "packages";
     AbsolutePath TestDirectory => RootDirectory / "tests";
     AbsolutePath SourceDirectory => RootDirectory / "src";
     AbsolutePath ProjectDirectory => SourceDirectory / "Cli";
+    AbsolutePath LibDirectory => SourceDirectory / "Lib";
     IEnumerable<string> Projects => Solution.AllProjects.Select(x => x.Name);
 
     Target Print => _ => _
     .Executes(() =>
     {
-        Log.Information("Minver Version = {Value}", MinVer.Version);
         Log.Information("Commit = {Value}", Repository.Commit);
         Log.Information("Branch = {Value}", Repository.Branch);
         Log.Information("Tags = {Value}", Repository.Tags);
@@ -91,7 +90,9 @@ class Build : NukeBuild
     Target Clean => _ => _
         .Executes(() =>
         {
-            ArtifactsDirectory.CreateOrCleanDirectory();
+            SourceDirectory
+                .GlobDirectories("**/{obj,bin}")
+                .DeleteDirectories();
         });
 
     Target Restore => _ => _
@@ -107,7 +108,6 @@ class Build : NukeBuild
         .DependsOn(Clean, Restore)
         .Executes(() =>
         {
-            Log.Information("Building version {Value}", MinVer.Version);
             DotNetBuild(_ => _
                 .EnableNoLogo()
                 .EnableNoRestore()
@@ -149,32 +149,32 @@ class Build : NukeBuild
             }
         });
 
-    Target BumpVersion => _ => _
-        .Before(Compile)
-        .Executes(() =>
-        {
-            Log.Information("Minver FileVersion = {Value}", MinVer.FileVersion);
-            Log.Information("Commit = {Value}", Repository.Commit);
-            Log.Information("Branch = {Value}", Repository.Branch);
-            Log.Information("Tags = {Value}", Repository.Tags);
-            // GitTasks.Git("checkout main");
-            string tag = "";
+    // Target BumpVersion => _ => _
+    //     .Before(Compile)
+    //     .Executes(() =>
+    //     {
+    //         Log.Information("Minver FileVersion = {Value}", MinVer.FileVersion);
+    //         Log.Information("Commit = {Value}", Repository.Commit);
+    //         Log.Information("Branch = {Value}", Repository.Branch);
+    //         Log.Information("Tags = {Value}", Repository.Tags);
+    //         // GitTasks.Git("checkout main");
+    //         string tag = "";
 
-            MinVerTasks.MinVer("-i", logger: (outType, version) =>
-            {
-                if (outType == OutputType.Std)
-                    tag = version;
-            });
-            Log.Information("Minver Last Tag Version = {Value}", tag);
+    //         MinVerTasks.MinVer("-i", logger: (outType, version) =>
+    //         {
+    //             if (outType == OutputType.Std)
+    //                 tag = version;
+    //         });
+    //         Log.Information("Minver Last Tag Version = {Value}", tag);
 
-            GitTasks.Git($"tag {tag} -f");
-            GitTasks.Git($"push --tags -f");
-            (MinVer, var output) = MinVerTasks.MinVer(_ => _);
-            Log.Information("Minver Version = {Value}", MinVer.Version);
-            Log.Information("Commit = {Value}", Repository.Commit);
-            Log.Information("Branch = {Value}", Repository.Branch);
-            Log.Information("Tags = {Value}", Repository.Tags);
-        });
+    //         GitTasks.Git($"tag {tag} -f");
+    //         GitTasks.Git($"push --tags -f");
+    //         (MinVer, var output) = MinVerTasks.MinVer(_ => _);
+    //         Log.Information("Minver Version = {Value}", MinVer.Version);
+    //         Log.Information("Commit = {Value}", Repository.Commit);
+    //         Log.Information("Branch = {Value}", Repository.Branch);
+    //         Log.Information("Tags = {Value}", Repository.Tags);
+    //     });
 
     Target Publish => _ => _
         .After(Test)

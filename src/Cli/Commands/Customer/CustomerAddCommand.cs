@@ -18,9 +18,9 @@ public class CustomerAddCommand(IAnsiConsole console, ICustomerService service) 
         [CommandArgument(3, "<HouseNumber>")]
         public int HouseNumber { get; set; }
 
-        [CommandArgument(4, "<Distance(miles)>")]
+        [CommandArgument(4, "<Distance>")]
         public int Distance { get; set; }
-        
+
     }
     private readonly IAnsiConsole _console = console;
     private readonly ICustomerService _service = service;

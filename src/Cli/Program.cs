@@ -76,5 +76,5 @@ await app.RunAsync();
 
 #if DEBUG
 Console.Write("Press any key to continue");
-Console.ReadKey();
+Console.ReadKey(intercept: true);
 #endif

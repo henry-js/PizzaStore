@@ -153,9 +153,6 @@ namespace Lib.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("CustomerDistance")
-                        .HasColumnType("REAL");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 

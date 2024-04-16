@@ -9,37 +9,41 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
 {
     private readonly PizzaStoreContext _db = dbContext;
 
-    public void DeleteOrder(Order order)
-    {
-    }
 
     public Order? GetOrder(int orderId)
     {
         return _db.Orders.SingleOrDefault(o => o.Id == orderId);
     }
 
-    public IEnumerable<PizzaBase> GetPizzaBases()
-    {
-        return [.. _db.PizzaBases];
-    }
+    public IEnumerable<PizzaBase> GetPizzaBases() => [.. _db.PizzaBases];
 
-    public IEnumerable<Topping> GetPizzaToppings()
-    {
-        return [.. _db.Toppings];
-    }
+    public IEnumerable<Topping> GetPizzaToppings() => [.. _db.Toppings];
 
-    public IEnumerable<Customer> GetCustomers()
-    {
-        return [.. _db.Customers];
+    public IEnumerable<Customer> GetCustomers() => [.. _db.Customers];
 
-    }
+    public IEnumerable<User> GetUsers() => [.. _db.Users];
+
     public void Save(Order order)
     {
+        if (!order.Pizzas.Any()) return;
+
         if (!_db.Orders.Any(o => o.Id == order.Id))
         {
             _db.Orders.Add(order);
         }
         _db.SaveChanges();
+    }
+
+    public void Delete(int orderId)
+    {
+        var order = _db.Orders.SingleOrDefault(o => o.Id == orderId);
+
+        if (order == null) return;
+        if (!order.IsInvoiced)
+        {
+            _db.Orders.Remove(order);
+            _db.SaveChanges();
+        }
     }
 
     public Invoice? InvoiceOrder(Order order)
@@ -57,5 +61,9 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
         return invoice;
     }
 
-    public IEnumerable<User> GetUsers() => [.. _db.Users];
+    public void MarkAsForDelivery(Order order)
+    {
+        order.MarkAsForDelivery();
+        _db.SaveChanges();
+    }
 }

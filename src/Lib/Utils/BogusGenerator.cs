@@ -23,7 +23,7 @@ public static class BogusGenerator
 
     public static IEnumerable<Order> GenerateOrders(int orders)
     {
-        int orderId = 0;
+        // int orderId = 0;
         var orderFaker = new Faker<Order>();
 
         return orderFaker.Generate(orders);

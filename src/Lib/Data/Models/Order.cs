@@ -45,7 +45,7 @@ public class Order
             _ => 0,
         };
 
-    public void MarkAsForDelivery()
+    internal void MarkAsForDelivery()
     {
         IsDelivery = Customer.SupportsDelivery;
     }

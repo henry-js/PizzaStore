@@ -8,7 +8,7 @@ using PizzaStore.Lib.Utils;
 
 namespace Lib.Tests;
 
-public class OrderServiceTests : IClassFixture<DatabaseFixture>
+public class OrderTests : IClassFixture<DatabaseFixture>
 {
     private readonly DatabaseFixture _fixture;
     private readonly IEnumerable<Topping> toppings;
@@ -17,7 +17,7 @@ public class OrderServiceTests : IClassFixture<DatabaseFixture>
     private readonly IEnumerable<Customer> customers;
     private OrderService service;
 
-    public OrderServiceTests(DatabaseFixture fixture)
+    public OrderTests(DatabaseFixture fixture)
     {
         _fixture = fixture;
         service = new OrderService(_fixture.Context);
@@ -61,7 +61,7 @@ public class OrderServiceTests : IClassFixture<DatabaseFixture>
         var service = new OrderService(_fixture.Context);
         var order = Order.CreateNew(customer, [], users.First());
 
-        order.MarkAsForDelivery();
+        service.MarkAsForDelivery(order);
         order.IsDelivery.Should().BeTrue();
     }
 
@@ -69,12 +69,17 @@ public class OrderServiceTests : IClassFixture<DatabaseFixture>
     [ClassData(typeof(OutOfRangeCustomerTestData))]
     public void MarkAsForDeliveryShouldDoNothingWhenCustomerIsOutOfRange(Customer customer)
     {
+        // Arrange
         var service = new OrderService(_fixture.Context);
         var order = Order.CreateNew(customer, [], users.First());
 
-        order.MarkAsForDelivery();
-        order.IsDelivery.Should().BeFalse();
+        // Act
+        service.MarkAsForDelivery(order);
+
+        // Assert
+        order.IsDelivery.Should().BeFalse("Customers who are out of range cannot have their orders delivered");
     }
+
     [Fact]
     public void InvoicedOrderShouldBeMarkedAsSuch()
     {
@@ -155,8 +160,7 @@ public class InRangeCustomerTestData : TheoryData<Customer>
             .RuleFor(c => c.PostCode, f => f.Address.ZipCode("??##??"))
             .RuleFor(c => c.HouseNumber, f => f.Random.Int(1, 100).ToString())
             .RuleFor(c => c.FirstName, f => f.Person.FirstName)
-            .RuleFor(c => c.DeliveryDistance, f => f.Random.Int(0, 7))
-        ;
+            .RuleFor(c => c.DeliveryDistance, f => f.Random.Int(0, 7));
 
         return fakeCustomer.Generate(5);
     }
