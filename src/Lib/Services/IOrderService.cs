@@ -1,3 +1,4 @@
+using System.Collections;
 using PizzaStore.Lib.Data.Models;
 
 namespace PizzaStore.Lib.Services;
@@ -11,4 +12,7 @@ public interface IOrderService
     public IEnumerable<Customer> GetCustomers();
 
     void Save(Order order);
+    IEnumerable<User> GetUsers();
+    public Invoice? InvoiceOrder(Order order);
+
 }

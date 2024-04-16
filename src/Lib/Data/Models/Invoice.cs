@@ -6,13 +6,13 @@ public class Invoice
     public Invoice() { }
 
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public User User { get; set; }
     public DateTime CreatedAt { get; set; }
     public Order Order { get; set; }
     public Customer Customer { get; set; }
     public decimal Price { get; set; }
     public decimal VatPrice { get; set; }
-
+    public bool IsReadOnly { get; internal set; } = true;
 }
 
 public class User

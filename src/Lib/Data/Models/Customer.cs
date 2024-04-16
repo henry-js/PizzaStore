@@ -15,6 +15,8 @@ public class Customer
     // public IEnumerable<Order> Orders { get; set; } = [];
     [NotMapped]
     public string Code => $"{LastName}{HouseNumber}{PostCode}".ToUpper(CultureInfo.CurrentCulture);
+    [NotMapped]
+    public bool SupportsDelivery => DeliveryDistance < 8;
 
     // public static Customer CreateNew(string firstName, string lastName, string postCode, string houseNumber)
     // {

@@ -20,6 +20,7 @@ public class CustomerAddCommand(IAnsiConsole console, ICustomerService service) 
 
         [CommandArgument(4, "<Distance(miles)>")]
         public int Distance { get; set; }
+        
     }
     private readonly IAnsiConsole _console = console;
     private readonly ICustomerService _service = service;

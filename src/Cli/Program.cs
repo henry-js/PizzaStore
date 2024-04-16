@@ -28,6 +28,9 @@ builder.Services
 
 
 // Add a command and optionally configure it.
+
+builder.Services.AddScoped<DemoCommand>();
+
 builder.Services.AddScoped<CustomerListCommand>();
 builder.Services.AddScoped<CustomerAddCommand>();
 builder.Services.AddScoped<CustomerDeleteCommand>();
@@ -41,28 +44,32 @@ builder.Services.AddScoped<OrderAddCommand>();
 
 builder.UseSpectreConsole<MainMenuCommand>(config =>
 {
-    // All commands above are passed to config.AddCommand() by this point
+      // All commands above are passed to config.AddCommand() by this point
 
-    config.SetApplicationName("pz");
-    config.UseBasicExceptionHandler();
-    config.AddBranch("customer", branch =>
-    {
-        branch.AddCommand<CustomerListCommand>("list")
-              .WithDescription("List all available customers");
-        branch.AddCommand<CustomerAddCommand>("add")
-              .WithDescription("Add a new customer to system");
-        branch.AddCommand<CustomerDeleteCommand>("delete")
-              .WithDescription("Delete customer by Id code");
-        branch.AddCommand<CustomerViewCommand>("view")
-              .WithDescription("View customer by Id code");
-    });
+      config.SetApplicationName("pz");
+      config.UseBasicExceptionHandler();
 
-    config.AddBranch("order", order =>
-    {
-        order.AddCommand<OrderAddCommand>("add")
-            .WithDescription("Create a new order for a customer");
+      config.AddCommand<DemoCommand>("demo")
+            .WithDescription("Demo various components");
 
-    });
+      config.AddBranch("customer", branch =>
+      {
+            branch.AddCommand<CustomerListCommand>("list")
+                .WithDescription("List all available customers");
+            branch.AddCommand<CustomerAddCommand>("add")
+                .WithDescription("Add a new customer to system");
+            branch.AddCommand<CustomerDeleteCommand>("delete")
+                .WithDescription("Delete customer by Id code");
+            branch.AddCommand<CustomerViewCommand>("view")
+                .WithDescription("View customer by Id code");
+      });
+
+      config.AddBranch("order", order =>
+      {
+            order.AddCommand<OrderAddCommand>("add")
+              .WithDescription("Create a new order for a customer");
+
+      });
 });
 
 var app = builder.Build();
@@ -70,5 +77,6 @@ var app = builder.Build();
 await app.RunAsync();
 
 #if DEBUG
-Console.ReadLine();
+Console.Write("Press any key to continue");
+Console.ReadKey();
 #endif

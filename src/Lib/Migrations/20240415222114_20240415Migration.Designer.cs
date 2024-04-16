@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzaStore.Lib.Data;
 
@@ -10,9 +11,11 @@ using PizzaStore.Lib.Data;
 namespace Lib.Migrations
 {
     [DbContext(typeof(PizzaStoreContext))]
-    partial class PizzaStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20240415222114_20240415Migration")]
+    partial class _20240415Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -121,9 +124,6 @@ namespace Lib.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsReadOnly")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("INTEGER");
 
@@ -141,8 +141,6 @@ namespace Lib.Migrations
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Invoices");
                 });
@@ -165,7 +163,7 @@ namespace Lib.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDelivery")
+                    b.Property<bool>("IsDeliverable")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsInvoiced")
@@ -174,14 +172,9 @@ namespace Lib.Migrations
                     b.Property<decimal>("OrderPrice")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -290,33 +283,6 @@ namespace Lib.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PizzaStore.Lib.Data.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FirstName = "Henry",
-                            LastName = "James"
-                        });
-                });
-
             modelBuilder.Entity("OrderPizzaTopping", b =>
                 {
                     b.HasOne("PizzaStore.Lib.Data.Models.OrderPizza", null)
@@ -346,17 +312,9 @@ namespace Lib.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PizzaStore.Lib.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Customer");
 
                     b.Navigation("Order");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PizzaStore.Lib.Data.Models.Order", b =>
@@ -367,15 +325,7 @@ namespace Lib.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PizzaStore.Lib.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Customer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PizzaStore.Lib.Data.Models.OrderPizza", b =>

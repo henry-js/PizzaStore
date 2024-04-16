@@ -11,6 +11,7 @@ public class PizzaStoreContext(DbContextOptions<PizzaStoreContext> options) : Db
     public DbSet<Topping> Toppings { get; set; }
     public DbSet<OrderPizza> OrderPizzas { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,5 +40,8 @@ public class PizzaStoreContext(DbContextOptions<PizzaStoreContext> options) : Db
                 new () { Id = 4, FirstName = "Stephen", LastName = "Bonnell", PostCode = "BR75PN", HouseNumber = "4", DeliveryDistance = 4 },
                 new () { Id = 5, FirstName = "Kate", LastName = "Braithwaite", PostCode = "FY76SU", HouseNumber = "5", DeliveryDistance = 5 },
             ]);
+        modelBuilder.Entity<User>().HasData(
+            [new() { Id = 1, FirstName = "Henry", LastName = "James" }]
+        );
     }
 }
