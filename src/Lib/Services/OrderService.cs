@@ -13,9 +13,9 @@ public class OrderService(PizzaStoreContext dbContext) : IOrderService
     {
     }
 
-    public Order GetOrder(int orderId)
+    public Order? GetOrder(int orderId)
     {
-        return _db.Orders.Single(o => o.Id == orderId);
+        return _db.Orders.SingleOrDefault(o => o.Id == orderId);
     }
 
     public IEnumerable<PizzaBase> GetPizzaBases()

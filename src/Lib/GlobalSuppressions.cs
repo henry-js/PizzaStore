@@ -5,5 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "MA0048:File name must match type name", Justification = "<Pending>", Scope = "type", Target = "~T:Lib.Migrations.InitialCreate")]
-[assembly: SuppressMessage("Design", "MA0051:Method is too long", Justification = "<Pending>", Scope = "member", Target = "~M:Lib.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)")]
+[assembly: SuppressMessage("Design", "MA0048:File name must match type name", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.EntityFrameworkCore.Migrations.Migration")]

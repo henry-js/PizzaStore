@@ -4,7 +4,7 @@ using PizzaStore.Lib.Data;
 using PizzaStore.Lib.Data.Models;
 using PizzaStore.Lib.Services;
 
-namespace PizzaStore.Lib;
+namespace PizzaStore.Lib.Extensions;
 
 public static class PizzaStoreExtensions
 {

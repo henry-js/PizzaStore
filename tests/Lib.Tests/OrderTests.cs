@@ -91,18 +91,37 @@ public class OrderServiceTests : IClassFixture<DatabaseFixture>
     [Fact]
     public void OrderToInvoiceShouldDoNothingIfAlreadyInvoiced()
     {
+        // Arrange
         var service = new OrderService(_fixture.Context);
         var customer = customers.First();
         var pizzas = BogusGenerator.GeneratePizzas(bases, toppings, 3);
         var order = Order.CreateNew(customer, pizzas, users.First());
 
-        service.InvoiceOrder(order);
-
-        order.IsInvoiced.Should().BeTrue();
-
+        // Act
+        service.Save(order);
         service.InvoiceOrder(order);
         order.IsInvoiced.Should().BeTrue();
+        var invoice = service.InvoiceOrder(order);
 
+        // Assert
+        invoice.Should().BeNull();
+        order.IsInvoiced.Should().BeTrue();
+    }
+
+    [Fact]
+    public void OrderServiceShouldNotSaveOrderIfOrderPizzasIsEmpty()
+    {
+        // Arrange
+        var service = new OrderService(_fixture.Context);
+        var pizzas = new List<OrderPizza>();
+        var order = Order.CreateNew(customers.First(), pizzas, users.First());
+
+        // Act
+        service.Save(order);
+        var notSavedOrder = service.GetOrder(order.Id);
+
+        // Assert
+        notSavedOrder.Should().BeNull();
     }
 }
 
