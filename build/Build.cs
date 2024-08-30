@@ -101,7 +101,12 @@ class Build : NukeBuild
         {
             DotNetRestore(_ => _
                 .SetForce(true)
-                .SetProjectFile(Solution.Path));
+                .SetProjectFile(ProjectDirectory)
+                .SetRuntime("win-x64"))
+                ;
+            DotNetRestore(_ => _
+                .SetForce(true)
+                .SetProjectFile(LibDirectory));
         });
 
     Target Compile => _ => _
@@ -111,8 +116,11 @@ class Build : NukeBuild
             DotNetBuild(_ => _
                 .EnableNoLogo()
                 .EnableNoRestore()
-                .SetProjectFile(Solution.Directory)
+                .SetProjectFile(ProjectDirectory)
                 .SetConfiguration(Configuration)
+                .SetRuntime("win-x64")
+                .EnablePublishSingleFile()
+                .EnableSelfContained()
             );
         });
     IReadOnlyCollection<Output> TestOutputs;
@@ -129,7 +137,6 @@ class Build : NukeBuild
             TestOutputs = DotNetTest(_ => _
                 .EnableNoLogo()
                 .EnableNoBuild()
-                .EnableNoRestore()
                 .SetConfiguration(Configuration)
                 .SetDataCollector("XPlat Code Coverage")
                 .SetResultsDirectory(ResultsDirectory)
@@ -187,10 +194,12 @@ class Build : NukeBuild
             DotNetPublish(_ => _
                 .EnableNoLogo()
                 .EnableNoBuild()
-                .EnableNoRestore()
                 .SetProject(ProjectDirectory)
                 .SetOutput(PublishDirectory)
                 .SetConfiguration(Configuration)
+                .SetRuntime("win-x64")
+                .EnablePublishSingleFile()
+                .EnableSelfContained()
             );
 
             PublishDirectory.ZipTo(PackDirectory / $"{Solution.Name}.zip", fileMode: FileMode.Create);

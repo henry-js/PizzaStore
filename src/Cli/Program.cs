@@ -17,8 +17,6 @@ builder.Configuration.AddJsonFile("appsettings.json", false);
 builder.Logging.ClearProviders();
 
 // Bind configuration section to object
-// builder.Services.AddOptions<NestedSettings>()
-//     .Bind(builder.Configuration.GetSection(NestedSettings.Key));
 var pizzaDbString = builder.Configuration.GetConnectionString("PizzaStoreDb")!;
 builder.Services
       .AddPizzaStoreDb(connectionString: pizzaDbString)
@@ -55,7 +53,7 @@ builder.UseSpectreConsole<MainMenuCommand>(config =>
             branch.AddCommand<CustomerListCommand>("list")
                 .WithDescription("List all available customers");
             branch.AddCommand<CustomerAddCommand>("add")
-                .WithDescription("Add a new customer to system");
+                .WithDescription("Add a new customer to the system");
             branch.AddCommand<CustomerDeleteCommand>("delete")
                 .WithDescription("Delete customer by Id code");
             branch.AddCommand<CustomerViewCommand>("view")
